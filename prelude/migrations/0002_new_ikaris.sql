@@ -1,0 +1,1 @@
+ALTER TABLE "accesses" ADD COLUMN "jwt_payload" json NOT NULL;

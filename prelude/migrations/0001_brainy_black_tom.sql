@@ -1,0 +1,1 @@
+ALTER TABLE "accesses" ADD CONSTRAINT "accesses_login_unique" UNIQUE("login");

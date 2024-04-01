@@ -1,0 +1,49 @@
+{
+	"id": "a97fb834-db5e-4c9d-bc44-427e1b887fb4",
+	"prevId": "7110d4f1-6f5a-46ff-91d9-948f274d52a4",
+	"version": "6",
+	"dialect": "postgresql",
+	"tables": {
+		"public.accesses": {
+			"name": "accesses",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"login": {
+					"name": "login",
+					"type": "varchar(128)",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"password": {
+					"name": "password",
+					"type": "varchar(64)",
+					"primaryKey": false,
+					"notNull": true
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {
+				"accesses_login_unique": {
+					"name": "accesses_login_unique",
+					"nullsNotDistinct": false,
+					"columns": ["login"]
+				}
+			}
+		}
+	},
+	"enums": {},
+	"schemas": {},
+	"_meta": {
+		"columns": {},
+		"schemas": {},
+		"tables": {}
+	}
+}

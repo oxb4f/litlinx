@@ -1,0 +1,27 @@
+services:
+  app:
+    image: ${APP_IMAGE:-}
+    command: sh -c 'bun dev'
+    restart: always
+    container_name: comedy
+    env_file:
+      - ${ENV_FILE:-.env}
+    ports:
+      - "${APP_PORT:-8081}:${APP_PORT:-8081}"
+    volumes:
+      - ../src:/app/src
+      - ../migrations:/app/migrations
+    depends_on:
+      - db
+    expose:
+      - "${APP_PORT:-8081}"
+
+  db:
+    image: postgres:15-alpine
+    env_file:
+      - ${ENV_FILE:-.env}
+    ports:
+      - "${POSTGRES_PORT:-5432}:${POSTGRES_PORT:-5432}"
+    expose:
+      - "${POSTGRES_PORT:-5432}"
+
