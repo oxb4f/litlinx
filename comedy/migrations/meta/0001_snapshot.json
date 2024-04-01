@@ -1,0 +1,66 @@
+{
+	"id": "b7aac921-03cc-4fc7-89f5-7f8b5a364105",
+	"prevId": "a0f6d0e5-9e63-4b19-9f5a-421c944c684f",
+	"version": "6",
+	"dialect": "postgresql",
+	"tables": {
+		"public.users": {
+			"name": "users",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"name": {
+					"name": "name",
+					"type": "varchar(128)",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"birthday": {
+					"name": "birthday",
+					"type": "date",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"username": {
+					"name": "username",
+					"type": "varchar(128)",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"external_access_id": {
+					"name": "external_access_id",
+					"type": "bigint",
+					"primaryKey": false,
+					"notNull": true
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {
+				"users_username_unique": {
+					"name": "users_username_unique",
+					"nullsNotDistinct": false,
+					"columns": ["username"]
+				},
+				"users_external_access_id_unique": {
+					"name": "users_external_access_id_unique",
+					"nullsNotDistinct": false,
+					"columns": ["external_access_id"]
+				}
+			}
+		}
+	},
+	"enums": {},
+	"schemas": {},
+	"_meta": {
+		"columns": {},
+		"schemas": {},
+		"tables": {}
+	}
+}

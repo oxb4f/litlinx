@@ -1,0 +1,110 @@
+{
+	"id": "a0f6d0e5-9e63-4b19-9f5a-421c944c684f",
+	"prevId": "00000000-0000-0000-0000-000000000000",
+	"version": "6",
+	"dialect": "postgresql",
+	"tables": {
+		"public.books": {
+			"name": "books",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"name": {
+					"name": "name",
+					"type": "varchar(128)",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"description": {
+					"name": "description",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "bigint",
+					"primaryKey": false,
+					"notNull": true
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"books_user_id_users_id_fk": {
+					"name": "books_user_id_users_id_fk",
+					"tableFrom": "books",
+					"tableTo": "users",
+					"columnsFrom": ["user_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {}
+		},
+		"public.users": {
+			"name": "users",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"name": {
+					"name": "name",
+					"type": "varchar(128)",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"birthday": {
+					"name": "birthday",
+					"type": "date",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"username": {
+					"name": "username",
+					"type": "varchar(128)",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"external_access_id": {
+					"name": "external_access_id",
+					"type": "bigint",
+					"primaryKey": false,
+					"notNull": true
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {
+				"users_username_unique": {
+					"name": "users_username_unique",
+					"nullsNotDistinct": false,
+					"columns": ["username"]
+				},
+				"users_external_access_id_unique": {
+					"name": "users_external_access_id_unique",
+					"nullsNotDistinct": false,
+					"columns": ["external_access_id"]
+				}
+			}
+		}
+	},
+	"enums": {},
+	"schemas": {},
+	"_meta": {
+		"columns": {},
+		"schemas": {},
+		"tables": {}
+	}
+}
