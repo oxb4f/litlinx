@@ -2,13 +2,17 @@ import { z } from "zod";
 
 export interface Config {
 	APP_PORT: number;
+
 	POSTGRES_USER: string;
 	POSTGRES_PASSWORD: string;
 	POSTGRES_DB: string;
 	POSTGRES_HOST: string;
 	POSTGRES_PORT: number;
+
 	JWT_SECRET: string;
 	JWT_ACCESS_LIFETIME: number;
+
+	REFRESH_TOKEN_LIFETIME: number;
 }
 
 export class ConfigValidationError extends Error {
@@ -39,6 +43,8 @@ export const configSchema = z.object({
 
 	JWT_SECRET: z.string(),
 	JWT_ACCESS_LIFETIME: z.coerce.number().int().positive(),
+
+	REFRESH_TOKEN_LIFETIME: z.coerce.number().int().positive(),
 });
 
 export function load() {

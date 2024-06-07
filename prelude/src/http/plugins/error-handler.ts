@@ -4,22 +4,24 @@ import { match } from "ts-pattern";
 import { ZodError } from "zod";
 import { AccessDuplicationError } from "../../services/accesses/errors/access-duplication-error";
 import { AccessLoginError } from "../../services/accesses/errors/access-login-error";
+import { AccessRefreshError } from "../../services/accesses/errors/access-refresh-error";
 import { JwtVerifyError } from "../../services/accesses/errors/jwt-verify-error";
 
 const serviceLayerErrors = [
-    AccessLoginError,
-    AccessDuplicationError,
-    JwtVerifyError,
+	AccessLoginError,
+	AccessDuplicationError,
+	AccessRefreshError,
+	JwtVerifyError,
 ] as const;
 
-const allErrors = [ ...serviceLayerErrors, ZodError, Error ] as const;
+const allErrors = [...serviceLayerErrors, ZodError, Error] as const;
 
 type ExtractEnumTypeFromArray<T extends readonly any[]> = T extends readonly [
 	infer Head,
 	...infer Tail,
 ]
 	? Head extends { new (...args: any[]): infer O }
-		? (O | ExtractEnumTypeFromArray<Tail>)
+		? O | ExtractEnumTypeFromArray<Tail>
 		: never
 	: never;
 
@@ -42,7 +44,11 @@ const errorHandlerPlugin = fp(async function errorHandler(
 	fastify: FastifyInstance,
 ) {
 	fastify.setErrorHandler(
-		(error: ExtractEnumTypeFromArray<typeof allErrors>, _req: FastifyRequest, reply: FastifyReply) => {
+		(
+			error: ExtractEnumTypeFromArray<typeof allErrors>,
+			_req: FastifyRequest,
+			reply: FastifyReply,
+		) => {
 			match(error)
 				.when(
 					(e) => e instanceof ZodError,
@@ -61,7 +67,9 @@ const errorHandlerPlugin = fp(async function errorHandler(
 				)
 				.when(
 					(e) => serviceLayerErrors.some((ec) => e instanceof ec),
-					(matchedError: ExtractEnumTypeFromArray<typeof serviceLayerErrors>) => {
+					(
+						matchedError: ExtractEnumTypeFromArray<typeof serviceLayerErrors>,
+					) => {
 						sendErrorResponse(
 							reply,
 							422,

@@ -16,7 +16,8 @@ export function makeService<T extends Record<string, any>, R>(
 ) {
 	const proxyHandler = {
 		async apply(target: TAction<T, R>, thisArg: unknown, args: [ActionArg<T>]) {
-			if (validationSchema) args[0].dto = await validationSchema.parseAsync(args[0].dto);
+			if (validationSchema)
+				args[0].dto = await validationSchema.parseAsync(args[0].dto);
 
 			return target.apply(thisArg, args);
 		},

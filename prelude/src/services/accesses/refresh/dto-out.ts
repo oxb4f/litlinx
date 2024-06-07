@@ -1,4 +1,4 @@
-export class LoginDtoOut {
+export class RefreshDtoOut {
 	constructor(
 		public readonly id: number,
 		public readonly login: string,

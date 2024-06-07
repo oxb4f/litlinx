@@ -1,0 +1,61 @@
+{
+	"id": "735a5828-fffd-481f-8e61-134a88c03e68",
+	"prevId": "0d699572-3044-4c89-8e06-ca0b97116bed",
+	"version": "6",
+	"dialect": "postgresql",
+	"tables": {
+		"public.accesses": {
+			"name": "accesses",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"login": {
+					"name": "login",
+					"type": "varchar(128)",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"password": {
+					"name": "password",
+					"type": "varchar(64)",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"jwt_payload": {
+					"name": "jwt_payload",
+					"type": "json",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"refresh_tokens": {
+					"name": "refresh_tokens",
+					"type": "json",
+					"primaryKey": false,
+					"notNull": true
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {
+				"accesses_login_unique": {
+					"name": "accesses_login_unique",
+					"nullsNotDistinct": false,
+					"columns": ["login"]
+				}
+			}
+		}
+	},
+	"enums": {},
+	"schemas": {},
+	"_meta": {
+		"columns": {},
+		"schemas": {},
+		"tables": {}
+	}
+}

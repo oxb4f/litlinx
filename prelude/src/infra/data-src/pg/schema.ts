@@ -5,4 +5,5 @@ export const accesses = pgTable("accesses", {
 	login: varchar("login", { length: 128 }).notNull().unique(),
 	password: varchar("password", { length: 64 }).notNull(),
 	jwtPayload: json("jwt_payload").notNull(),
+	refreshTokens: json("refresh_tokens").notNull(),
 });

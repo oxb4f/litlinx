@@ -13,6 +13,7 @@ export class AccessRepository extends BaseRepository {
 				login: access.login,
 				password: access.password,
 				jwtPayload: access.jwtPayload,
+				refreshTokens: Object.fromEntries(access.refreshTokens.entries()),
 			})
 			.returning({ id: accesses.id })
 			.execute();
@@ -29,6 +30,7 @@ export class AccessRepository extends BaseRepository {
 				login: accesses.login,
 				password: accesses.password,
 				jwtPayload: accesses.jwtPayload,
+				refreshTokens: accesses.refreshTokens,
 			})
 			.from(accesses)
 			.where(
@@ -52,5 +54,19 @@ export class AccessRepository extends BaseRepository {
 		await this._connection
 			.update(accesses)
 			.set({ jwtPayload: access.jwtPayload });
+	}
+
+	async updateFromEntity(access: Access) {
+		if (!access.id) return;
+
+		await this._connection
+			.update(accesses)
+			.set({
+				login: access.login,
+				password: access.password,
+				refreshTokens: Object.fromEntries(access.refreshTokens.entries()),
+			})
+			.where(eq(accesses.id, access.id))
+			.execute();
 	}
 }

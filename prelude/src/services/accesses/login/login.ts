@@ -8,8 +8,8 @@ import { LoginDtoOut } from "./dto-out";
 
 async function login({ dto, context }: { dto: LoginDtoIn; context: Context }) {
 	const access = await context.accessRepository.getAccess({
-        login: dto.login
-    });
+		login: dto.login,
+	});
 
 	if (!access) throw new AccessLoginError();
 
@@ -27,12 +27,20 @@ async function login({ dto, context }: { dto: LoginDtoIn; context: Context }) {
 		await context.accessRepository.updateJwtPayloadFromEntity(access);
 	}
 
+	access.deleteRefreshToken(dto.deviceId);
+
+	const refreshToken = await access.addOrReplaceRefreshToken(
+		dto.deviceId,
+		context.config.JWT_SECRET,
+		context.config.REFRESH_TOKEN_LIFETIME,
+	);
+
 	const jwtAccess = await access.generateJwtAccess(
 		context.config.JWT_SECRET,
 		context.config.JWT_ACCESS_LIFETIME,
 	);
 
-	return new LoginDtoOut(access.id!, access.login, jwtAccess);
+	return new LoginDtoOut(access.id!, access.login, refreshToken, jwtAccess);
 }
 
 export function factory() {
@@ -41,6 +49,7 @@ export function factory() {
 		z.object({
 			login: z.string().max(64),
 			password: z.string().min(8).max(64),
+			deviceId: z.string().min(8).max(256),
 			jwtPayload: z.record(z.string(), z.any()).optional(),
 		}),
 	);

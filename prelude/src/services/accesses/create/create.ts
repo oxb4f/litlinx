@@ -25,9 +25,16 @@ async function create({
 		login: dto.login,
 		password: dto.password,
 		jwtPayload: dto.jwtPayload,
+		refreshTokens: {},
 	});
 
-    await access.setPassword(dto.password);
+	await access.setPassword(dto.password);
+
+	const refreshToken = await access.addOrReplaceRefreshToken(
+		dto.deviceId,
+		context.config.JWT_SECRET,
+		context.config.REFRESH_TOKEN_LIFETIME,
+	);
 
 	await context.accessRepository.createFromEntity(access);
 
@@ -36,7 +43,12 @@ async function create({
 		context.config.JWT_ACCESS_LIFETIME,
 	);
 
-	return new CreateAccessDtoOut(access.id!, access.login, jwtAccess);
+	return new CreateAccessDtoOut(
+		access.id!,
+		access.login,
+		refreshToken,
+		jwtAccess,
+	);
 }
 
 export function factory() {
@@ -45,6 +57,7 @@ export function factory() {
 		z.object({
 			login: z.string().max(64),
 			password: z.string().min(8).max(64),
+			deviceId: z.string().min(8).max(256),
 			jwtPayload: z.record(z.string(), z.any()),
 		}),
 	);

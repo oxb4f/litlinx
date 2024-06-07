@@ -16,6 +16,7 @@ async function verify({
 	const decodedJwtAccess = await Access.verifyAndDecodeJwt(
 		dto.jwtAccess,
 		context.config.JWT_SECRET,
+        dto.ignoreExpiration
 	);
 
 	if (!decodedJwtAccess?.accessId) throw new JwtVerifyError();
@@ -32,6 +33,7 @@ export function factory() {
 		verify,
 		z.object({
 			jwtAccess: z.string().max(256),
+			ignoreExpiration: z.boolean().optional(),
 		}),
 	);
 }
