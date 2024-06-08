@@ -12,7 +12,7 @@ export class UserRepository extends BaseRepository {
 			.values({
 				name: user.name,
 				username: user.username,
-				birthday: user.birthday ? user.birthday.toUTCString() : null,
+				birthday: user.birthday,
 				externalAccessId: user.externalAccessId,
 			})
 			.returning({ id: users.id })
@@ -47,5 +47,19 @@ export class UserRepository extends BaseRepository {
 		if (!raw?.id) return null;
 
 		return User.from(raw as UserPayload);
+	}
+
+	async updateFromEntity(user: User) {
+		if (!user.id) return;
+
+		await this._connection
+			.update(users)
+			.set({
+				name: user.name,
+				username: user.username,
+				birthday: user.birthday,
+			})
+			.where(eq(users.id, user.id))
+			.execute();
 	}
 }

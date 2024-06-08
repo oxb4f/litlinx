@@ -1,9 +1,7 @@
-export class CreateUserDtoOut {
+export class UpdateUserDtoOut {
 	constructor(
 		public readonly id: number,
 		public readonly username: string,
-		public readonly jwtAccess: string,
-		public readonly refreshToken: string,
 		public readonly name: string | null = null,
 		public readonly birthday: string | null = null,
 	) {}

@@ -19,27 +19,17 @@ async function create({
 
 	if (existingUser) throw new UserAlreadyExistsError();
 
-	const response = await fetch(`${context.config.PRELUDE_BASE_URL}/accesses`, {
-		method: "POST",
-		body: JSON.stringify({
-			login: dto.username,
-			password: dto.password,
-			jwtPayload: {},
-		}),
-		headers: { "Content-Type": "application/json" },
-	});
-
-	const body = await response.json();
-
-	const externalAccessId = body.id as number;
-	const jwtAccess = body.jwtAccess as string;
+	const result = await context.preludeHttpTransport.createAccess(
+		dto.username,
+		dto.password,
+	);
 
 	const user = await User.from({
 		id: null,
 		name: dto.name,
 		username: dto.username,
-		birthday: dto.birthday ? new Date(dto.birthday) : null,
-		externalAccessId: externalAccessId,
+		birthday: dto.birthday,
+		externalAccessId: result.id,
 	});
 
 	await context.userRepository.createFromEntity(user);
@@ -47,9 +37,10 @@ async function create({
 	return new CreateUserDtoOut(
 		user.id!,
 		user.username,
-		jwtAccess,
+		result.jwtAccess,
+		result.refreshToken,
 		user.name,
-		user.birthday?.toUTCString() ?? null,
+		user.getFormattedBirthday(),
 	);
 }
 

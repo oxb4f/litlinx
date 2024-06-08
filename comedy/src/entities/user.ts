@@ -59,6 +59,10 @@ export class User {
 		return this._birthday;
 	}
 
+	getFormattedBirthday() {
+		return this._birthday?.toUTCString() ?? null;
+	}
+
 	set birthday(birthday: Date) {
 		this._birthday = birthday;
 	}

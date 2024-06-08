@@ -24,7 +24,7 @@ export async function getConnection({
 	});
 
 	if (!_connection)
-		_connection = drizzle(postgres(connectionString, { max: 5 }), { schema });
+		_connection = drizzle(postgres(connectionString, { max: 5 }), { schema, logger: false });
 
 	return _connection;
 }
